@@ -1,18 +1,21 @@
 import express, { Request, Response } from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // Create Express app
 const app = express();
 
 // Middleware
-app.use(cors());            // allow frontend to access backend
-app.use(express.json());    // parse JSON request bodies
+app.use(cors());
+app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect('mongodb://127.0.0.1:27017/student_portal')
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log(err));
+// Connect to MongoDB (Atlas)
+mongoose.connect(process.env.MONGO_URI as string)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.log("MongoDB Error:", err));
 
 // Define Student schema & model
 interface IStudent extends mongoose.Document {
@@ -26,15 +29,15 @@ const studentSchema = new mongoose.Schema<IStudent>({
   name: { type: String, required: true },
   rollNo: { type: String, required: true },
   attendance: { type: Number, required: true },
-  marks: { type: Number, required: true }
+  marks: { type: Number, required: true },
 });
 
-const Student = mongoose.model<IStudent>('Student', studentSchema);
+const Student = mongoose.model<IStudent>("Student", studentSchema);
 
 // --- CRUD API routes ---
 
 // Get all students
-app.get('/students', async (_req: Request, res: Response) => {
+app.get("/students", async (_req: Request, res: Response) => {
   try {
     const students = await Student.find();
     res.json(students);
@@ -44,7 +47,7 @@ app.get('/students', async (_req: Request, res: Response) => {
 });
 
 // Create student
-app.post('/students', async (req: Request, res: Response) => {
+app.post("/students", async (req: Request, res: Response) => {
   try {
     const student = new Student(req.body);
     const saved = await student.save();
@@ -55,7 +58,7 @@ app.post('/students', async (req: Request, res: Response) => {
 });
 
 // Update student
-app.put('/students/:id', async (req: Request, res: Response) => {
+app.put("/students/:id", async (req: Request, res: Response) => {
   try {
     const updated = await Student.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updated);
@@ -65,15 +68,15 @@ app.put('/students/:id', async (req: Request, res: Response) => {
 });
 
 // Delete student
-app.delete('/students/:id', async (req: Request, res: Response) => {
+app.delete("/students/:id", async (req: Request, res: Response) => {
   try {
     await Student.findByIdAndDelete(req.params.id);
-    res.json({ message: 'Student deleted' });
+    res.json({ message: "Student deleted" });
   } catch (err) {
     res.status(400).json({ error: err });
   }
 });
 
 // Start server
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
