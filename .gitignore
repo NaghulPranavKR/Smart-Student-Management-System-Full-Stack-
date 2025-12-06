@@ -1,0 +1,17 @@
+# FRONTEND
+/student-portal-frontend/node_modules
+/student-portal-frontend/dist
+/student-portal-frontend/.env
+
+# BACKEND
+/student-portal-backend/node_modules
+/student-portal-backend/dist
+/student-portal-backend/.env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Logs
+npm-debug.log
+yarn-error.log

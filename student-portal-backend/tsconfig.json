@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es2020",                      // Use modern JS features
+    "module": "commonjs",                    // Node.js uses CommonJS
+    "rootDir": "./src",                      // Source files location
+    "outDir": "./dist",                      // Compiled JS output
+    "esModuleInterop": true,                 // Default imports from CommonJS modules
+    "forceConsistentCasingInFileNames": true, 
+    "strict": true,                          // Enable strict type checking
+    "skipLibCheck": true,                    // Skip type checking for libraries
+    "sourceMap": true,                       // Generate source maps for debugging
+    "noImplicitAny": true,                   // Catch any implicit "any" types
+    "noImplicitReturns": true,               // Ensure functions have return statements
+    "noUnusedLocals": true,                  // Warn about unused local variables
+    "noUnusedParameters": true               // Warn about unused function parameters
+  },
+  "include": ["src"],                        // Include all TS files in src
+  "exclude": ["node_modules", "dist"]        // Exclude dependencies and compiled files
+}
